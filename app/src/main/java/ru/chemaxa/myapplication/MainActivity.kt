@@ -9,7 +9,9 @@ import android.widget.EditText; // подключаем класс EditText
 
 
 class MainActivity : AppCompatActivity() {
-    val EXTRA_MESSAGE = "EXTRA_MESSAGE"
+    companion object {
+        val EXTRA_MESSAGE = "EXTRA_MESSAGE"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
