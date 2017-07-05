@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         if (operand == null) {
             operand = number
         } else {
-            if(number != null) {
+            if (number != null) {
                 if (lastOperation == "=") {
                     lastOperation = operation
                 }
@@ -82,13 +82,11 @@ class MainActivity : AppCompatActivity() {
                     "/" -> if (number == 0.toDouble()) {
                         operand = 0.0
                     } else {
-                        if(operand != null && number != null && operand != 0.0 && number!= 0.0) {
-                            operand /= number
-                        }
+                        operand = operand as Double / number
                     }
-                    "*" -> operand *= number
-                    "+" -> operand += number
-                    "-" -> operand -= number
+                    "*" -> operand = operand as Double * number
+                    "+" -> operand = operand as Double + number
+                    "-" -> operand = operand as Double - number
                 }
             }
         }
