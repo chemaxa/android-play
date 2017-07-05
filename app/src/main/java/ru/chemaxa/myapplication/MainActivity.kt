@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 class MainActivity : AppCompatActivity() {
+
     var resultField: TextView? = null // текстовое поле для вывода результата
     var operand: Double? = null  // операнд операции
     var lastOperation = "=" // последняя операция
