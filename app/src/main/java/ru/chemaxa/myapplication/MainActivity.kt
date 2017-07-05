@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 class MainActivity : AppCompatActivity() {
     var resultField: TextView? = null // текстовое поле для вывода результата
-    var operand: Double = 0.0  // операнд операции
+    var operand: Double? = null  // операнд операции
     var lastOperation = "=" // последняя операция
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +21,9 @@ class MainActivity : AppCompatActivity() {
     // сохранение состояния
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("OPERATION", lastOperation)
-        if (operand != 0.0)
-            outState.putDouble("OPERAND", operand)
+        if (operand != null) {
+            outState.putDouble("OPERAND", operand as Double)
+        }
         super.onSaveInstanceState(outState)
     }
 
@@ -41,8 +42,8 @@ class MainActivity : AppCompatActivity() {
         val button = view as Button
         resultField?.append(button.getText())
 
-        if (lastOperation == "=" && operand != 0.0) {
-            operand = 0.0
+        if (lastOperation == "=" && operand != null) {
+            operand = null
         }
     }
 
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val op = button.getText().toString()
         var number = resultField?.text.toString()
         // если введенно что-нибудь
-        if (number.length > 0) {
+        if (number.isNotEmpty()) {
             number = number.replace(',', '.')
             try {
                 performOperation(java.lang.Double.valueOf(number), op)
@@ -66,27 +67,32 @@ class MainActivity : AppCompatActivity() {
         resultField?.text = lastOperation
     }
 
-    private fun performOperation(number: Double, operation: String) {
+    private fun performOperation(number: Double?, operation: String) {
 
         // если операнд ранее не был установлен (при вводе самой первой операции)
-        if (operand == 0.0) {
+        if (operand == null) {
             operand = number
         } else {
-            if (lastOperation == "=") {
-                lastOperation = operation
-            }
-            when (lastOperation) {
-                "=" -> operand = number
-                "/" -> if (number == 0.0) {
+            if(number != null) {
+                if (lastOperation == "=") {
+                    lastOperation = operation
+                }
+                when (lastOperation) {
+                    "=" -> operand = number
+                    "/" -> if (number == 0.toDouble()) {
                         operand = 0.0
                     } else {
-                        operand /= number
+                        if(operand != null && number != null && operand != 0.0 && number!= 0.0) {
+                            operand /= number
+                        }
                     }
-                "*" -> operand *= number
-                "+" -> operand += number
-                "-" -> operand -= number
+                    "*" -> operand *= number
+                    "+" -> operand += number
+                    "-" -> operand -= number
+                }
             }
         }
+
         resultField?.text = operand.toString().replace('.', ',')
         resultField?.setText("")
     }
