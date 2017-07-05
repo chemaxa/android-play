@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
     // обработка нажатия на кнопку операции
     fun onOperationClick(view: View) {
-
         val button = view as Button
         val op = button.getText().toString()
         var number = resultField?.text.toString()
@@ -69,7 +68,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun performOperation(number: Double?, operation: String) {
-
         // если операнд ранее не был установлен (при вводе самой первой операции)
         if (operand == null) {
             operand = number
@@ -83,11 +81,11 @@ class MainActivity : AppCompatActivity() {
                     "/" -> if (number == 0.toDouble()) {
                         operand = 0.0
                     } else {
-                        operand = operand as Double / number
+                        operand = operand!! / number
                     }
-                    "*" -> operand = operand as Double * number
-                    "+" -> operand = operand as Double + number
-                    "-" -> operand = operand as Double - number
+                    "*" -> operand = operand!! * number
+                    "+" -> operand = operand!! + number
+                    "-" -> operand = operand!! -number
                 }
             }
         }
