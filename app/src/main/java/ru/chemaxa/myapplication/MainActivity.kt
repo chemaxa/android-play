@@ -22,53 +22,63 @@ class MainActivity : AppCompatActivity() {
         inputField = findViewById(R.id.inputField) as TextView
     }
 
-    // сохранение состояния
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString("OPERATION", lastOperation)
-        if (operand != null) {
-            outState.putDouble("OPERAND", operand as Double)
-        }
-        super.onSaveInstanceState(outState)
-    }
-
-    // получение ранее сохраненного состояния
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        lastOperation = savedInstanceState.getString("OPERATION")
-        operand = savedInstanceState.getDouble("OPERAND")
-        resultField.text = operand.toString()
-        resultField.text = lastOperation
-    }
+//    // сохранение состояния
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putString("OPERATION", lastOperation)
+//        if (operand != null) {
+//            outState.putDouble("OPERAND", operand as Double)
+//        }
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    // получение ранее сохраненного состояния
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        lastOperation = savedInstanceState.getString("OPERATION")
+//        operand = savedInstanceState.getDouble("OPERAND")
+//        resultField.text = operand.toString()
+//        resultField.text = lastOperation
+//    }
 
     // обработка нажатия на числовую кнопку
     fun onNumber(view: View) {
         val button = view as Button
-        //resultField?.append(button.text)
-        if (operand == null) {
-            operand = button.text.toString().toDouble()
+        val number = button.text.toString().toDouble()
+        inputField.text = inputField.text.toString() + button.text.toString()
+        if (lastOperation == "=" && operand == null) {
+            operand = number;
         }
-        resultField.text = resultField.text.toString() + performOperation(operand, lastOperation).toString()
+        if (lastOperation != "=") {
+            resultField.text = getResult(number!!).toString()
+        }
     }
 
     // обработка нажатия на кнопку операции
     fun onOperation(view: View) {
         val button = view as Button
-        val op = button.text.toString()
+        val op = if (button.id == R.id.button_reset) "clr" else button.text.toString()
         lastOperation = op
-        resultField.text = resultField.text.toString() + lastOperation
+        if (op == "clr") {
+            inputField.text = ""
+            resultField.text = ""
+            lastOperation = "="
+            operand = null
+            return
+        }
+        if (lastOperation == "=") {
+            resultField.text = operand.toString()
+        }else {
+            inputField.text = inputField.text.toString() + op
+        }
     }
 
-    private fun updateInput(data: String) {
-        inputField.text = inputField.text.toString() + data
-    }
-    private fun updateResult(result: String) {
-        resultField.text = resultField.text.toString() + result
+    fun getResult(number: Double): Double {
+        return performOperation(number, lastOperation).toDouble()
     }
 
-    private fun performOperation(number: Double?, operation: String): Double {
-        Log.d("Operation", operation)
-        Log.d("Number", number.toString())
-        Log.d("Operand", operand.toString())
+    private fun performOperation(number: Double?, operation: String): String {
+
+
         if (number != null) {
             when (operation) {
                 "=" -> operand = number
@@ -82,6 +92,6 @@ class MainActivity : AppCompatActivity() {
                 "-" -> operand = operand!! - number
             }
         }
-        return operand!!
+        return operand.toString()
     }
 }
