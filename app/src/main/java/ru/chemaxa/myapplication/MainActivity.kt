@@ -2,7 +2,6 @@ package ru.chemaxa.myapplication
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             operand = number;
         }
         if (lastOperation != "=") {
-            resultField.text = getResult(number!!).toString()
+            resultField.text = performOperation(number, lastOperation)
         }
     }
 
@@ -72,13 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getResult(number: Double): Double {
-        return performOperation(number, lastOperation).toDouble()
-    }
-
     private fun performOperation(number: Double?, operation: String): String {
-
-
         if (number != null) {
             when (operation) {
                 "=" -> operand = number
