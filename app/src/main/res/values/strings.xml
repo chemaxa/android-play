@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Калькулятор</string>
-    <string name="result">Результат</string>
+    <string name="result"></string>
+    <string name="input"></string>
     <string name="button_result">=</string>
+    <string name="button_reset">clear</string>
 </resources>
